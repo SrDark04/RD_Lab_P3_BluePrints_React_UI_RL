@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import api from '../../services/apiClient.js'
+import api from '../../services/blueprintsService.js'
 
 export const fetchAuthors = createAsyncThunk('blueprints/fetchAuthors', async () => {
   const { data } = await api.get('/blueprints')
@@ -51,8 +51,18 @@ const slice = createSlice({
         s.status = 'failed'
         s.error = a.error.message
       })
+      .addCase(fetchByAuthor.pending, (s) => {
+        s.status = 'loading'
+        s.error = null
+      })
       .addCase(fetchByAuthor.fulfilled, (s, a) => {
+        s.status = 'succeeded'
+        s.error = null
         s.byAuthor[a.payload.author] = a.payload.items
+      })
+      .addCase(fetchByAuthor.rejected, (s, a) => {
+        s.status = 'failed'
+        s.error = a.error.message
       })
       .addCase(fetchBlueprint.fulfilled, (s, a) => {
         s.current = a.payload

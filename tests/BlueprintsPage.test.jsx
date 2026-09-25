@@ -42,4 +42,15 @@ describe('BlueprintsPage', () => {
 
     expect(spy).toHaveBeenCalledWith({ type: 'blueprints/fetchByAuthor', payload: 'JohnConnor' })
   })
+
+  it('muestra "Sin resultados." cuando no hay planos para el autor', () => {
+    const store = makeStore({ status: 'idle', byAuthor: {} })
+    render(
+      <Provider store={store}>
+        <BlueprintsPage />
+      </Provider>,
+    )
+
+    expect(screen.getByText(/Sin resultados\./i)).toBeInTheDocument()
+  })
 })
