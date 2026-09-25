@@ -51,8 +51,18 @@ const slice = createSlice({
         s.status = 'failed'
         s.error = a.error.message
       })
+      .addCase(fetchByAuthor.pending, (s) => {
+        s.status = 'loading'
+        s.error = null
+      })
       .addCase(fetchByAuthor.fulfilled, (s, a) => {
+        s.status = 'succeeded'
+        s.error = null
         s.byAuthor[a.payload.author] = a.payload.items
+      })
+      .addCase(fetchByAuthor.rejected, (s, a) => {
+        s.status = 'failed'
+        s.error = a.error.message
       })
       .addCase(fetchBlueprint.fulfilled, (s, a) => {
         s.current = a.payload
