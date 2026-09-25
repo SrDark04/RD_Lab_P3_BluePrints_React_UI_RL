@@ -348,6 +348,7 @@ jobs:
 > **Evidencia – Pipeline de CI en GitHub Actions:**  
 > ![GitHub Actions CI](resources/images/GithubActionsCI.png)
 
+
 ---
 
 ## MATRIZ DE CUMPLIMIENTO DE REQUERIMIENTOS:
