@@ -7,6 +7,7 @@ export default function BlueprintCanvas({ points = [], width = 520, height = 360
     const canvas = ref.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
+    if (!ctx) return
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.fillStyle = '#0b1220'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
