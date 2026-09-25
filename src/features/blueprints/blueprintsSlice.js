@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import api from '../../services/apiClient.js'
+import api from '../../services/blueprintsService.js'
 
 export const fetchAuthors = createAsyncThunk('blueprints/fetchAuthors', async () => {
   const { data } = await api.get('/blueprints')

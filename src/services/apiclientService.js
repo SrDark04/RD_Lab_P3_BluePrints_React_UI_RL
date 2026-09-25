@@ -2,6 +2,13 @@
 import api from './apiClient.js'
 
 const apiclientService = {
+    get: (url) => {
+        return api.get(url)
+    },
+    post: (url, body) => {
+        return api.post(url, body)
+    },
+    /*
     // GET /blueprints → todos
     getAll: async () => {
         try {
@@ -41,7 +48,7 @@ const apiclientService = {
             console.error("No se pudo crear el blueprint:", error)
             throw error
         }
-    },
+    },*/
 }
 
 export default apiclientService
