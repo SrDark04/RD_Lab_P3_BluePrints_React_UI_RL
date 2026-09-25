@@ -9,7 +9,7 @@ import BlueprintCanvas from '../components/BlueprintCanvas.jsx'
 
 export default function BlueprintsPage() {
   const dispatch = useDispatch()
-  const { byAuthor, current, status } = useSelector((s) => s.blueprints)
+  const { byAuthor, current, status, error } = useSelector((s) => s.blueprints)
   const [authorInput, setAuthorInput] = useState('')
   const [selectedAuthor, setSelectedAuthor] = useState('')
   const items = byAuthor[selectedAuthor] || []
@@ -49,6 +49,24 @@ export default function BlueprintsPage() {
               Get blueprints
             </button>
           </div>
+          {status === 'failed' && selectedAuthor && (
+            <div style={{
+              marginTop: 12,
+              padding: 12,
+              background: '#450a0a',
+              border: '1px solid #f87171',
+              borderRadius: 8,
+              color: '#f87171',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <span>❌ Error: {error || 'No se pudo conectar con el servidor'}</span>
+              <button className="btn" onClick={getBlueprints}>
+                Reintentar
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="card">
