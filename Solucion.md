@@ -85,3 +85,41 @@ Al realizar esto, se pudo evidenciar que al momento de `VITE_USE_MOCK` cambie de
 ![apiclientService](resources/images/apiclientServiceModified.png)
 
 
+## CREACION DEL MODULO PARA EL ACCES TOKEN JWT: PrivateRoute
+
+Antes de realizar cualquier cambio o agregar alguna clase, preferimos aprender y saber como funciona este encabezado, entonces como lo haremos; en `apiclient.js` ya se tiene el interceptor que agrega `Authorization: Bearer TOKEN` a cada request automatica; y en `LoginPage.jsx` ya guarda el token en `localStorage` con `localStorage.setItem('token', data.token)`. Teniendo esto en cuenta lo que falta en esta capa es un `<PrivateRoute>`, el cual proteja las rutas las cuales requieren de autenticacion.
+
+Entonces la funcion que va a cumplir el `PrivateRoute` es la de un portero, se encargara de verificar si el usuario quiere acceder a una ruta protegida, `PrivateRoute` revisa si el usuario tiene un token en `localStorage`. Si lo tiene, le permite acceder a la ruta; si no lo tiene, lo redirige a la página de login. Esto asegura que solo los usuarios autenticados puedan acceder a ciertas partes de la aplicación.
+
+Para el desarrollo de este punto lo que haremos es lo siguiente:
+
+Primero se crea la clase `PrivateRoute.jsx` en la carpeta `src/components/`; de este modo controlaremos los enrutadores que se dirijen hacia el login o mostrando el contenido de la pagina principal, esto dependiendo de si el usuario tiene un token en `localStorage` o no.:
+![PrivateRoute](resources/images/PrivateRouteClass.png)
+
+Luego modificaremos el enrutador en la clase `app.jsx`:
+![routesApp](resources/images/EnrutamientosClaseApp.png)
+
+Y por ultimo realizamos un cambio en la clase `LoginPage.jsx` para que al momento de hacer login y tener un token en `localStorage`, se redirija a la pagina principal, esto se hace con el hook `useNavigate()` de React Router.:
+![LoginPage](resources/images/LoginPageFixed.png)
+
+
+## CONEXION BLUEPRINT AL STORE REDUX
+
+Entonces, para realizar la conexion con el redux debemos tener en cuenta que la ruta `/new` existe y ya esta protegida; entonces de este modocuando el usuario guarde un blueprint, se haga el dispatch real.
+
+Entonces, lo que vamos a realizar como primer paso de la solucion es que el `BluePrintForm` llame a `onSubmit` con los siguientes datos: `{ author: 'john', name: 'casa', points: [{x:1,y:2}] }`
+
+En la clase `App.jsx` vamos a agregar ciertos cambios, iniciando por los imports de `react-redux` y `./features/blueprints/blueprintsSlice.js`; junto a esto voy a modificar el componente dentro de `App.jsx` para que haga el dispatch de `createBlueprint` con los datos del formulario, de esta manera se va a poder hacer la conexion con el store de redux y se va a poder guardar el blueprint en el store.
+![DispatchApp](resources/images/ConfigDispatchApp.png)
+
+Despues de esto, si realizamos las siguientes 3 pruebas ejecutando el projecto deberiamos tener las siguientes pruebas exitosas:
+1. Abrir http://localhost:5173/login, luego intentamos entrar sin credenciales, lo cual debería fallar (sin backend)
+![LoginFail](resources/images/PruebaLogInSinBack.png)
+
+2. Abre http://localhost:5173/new sin estar logueado, lo cual debe redirigir a /login automáticamente
+![RedirectLogin](resources/images/PruebaNewSInLogIn.png)
+
+3. Con VITE_USE_MOCK=true, simulamos estar logueados poniendo en la consola del navegador: localStorage.setItem('token', 'fake-token'), luego recargamos `/new`, lo cual nos debe mostrar el formulario\
+![Console](resources/images/PruebaConsoleI.png)
+![ReloadConsole1](resources/images/PruebaConsoleII.png)
+
