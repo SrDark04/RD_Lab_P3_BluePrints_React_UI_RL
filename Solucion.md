@@ -19,6 +19,7 @@
 10. [Integración Continua (CI con GitHub Actions)](#integracion-continua-ci-con-github-actions)
 11. [Matriz de Cumplimiento de Requerimientos](#matriz-de-cumplimiento-de-requerimientos)
 12. [Conclusiones](#conclusiones)
+13. [Aclaración Final: Optimización de GitHub Actions (CI)](#aclaracion-final-optimizacion-de-github-actions-ci)
 
 ---
 
@@ -323,7 +324,7 @@ Siguiendo las mejores prácticas de la industria y la rúbrica de evaluación, s
 
 ## INTEGRACION CONTINUA (CI CON GITHUB ACTIONS):
 
-El repositorio cuenta con el flujo automatizado `.github/workflows/ci.yml`. Cada evento de `push` o `pull_request` sobre el repositorio dispara el ciclo completo de integración continua en contenedores Ubuntu con Node.js 20:
+El repositorio cuenta con el flujo automatizado `.github/workflows/ci.yml`. Cada evento de `push` o `pull_request` sobre el repositorio dispara el ciclo completo de integración continua en contenedores Ubuntu:
 
 ```yaml
 name: node-ci
@@ -373,3 +374,18 @@ jobs:
 2. **Predictibilidad con Redux Toolkit:** Centralizar el estado de los planos y el ciclo de vida de las peticiones (`idle`, `loading`, `succeeded`, `failed`) evita la dispersión del estado y garantiza una experiencia de usuario consistente, habilitando mecanismos de resiliencia como el botón de reintento.
 3. **Seguridad Integral en Frontend:** La combinación de interceptores en Axios para inyección automática de tokens JWT junto con componentes de enrutamiento protegido (`PrivateRoute`) garantiza que las operaciones sensibles queden resguardadas de accesos no autorizados.
 4. **Verificación Automatizada y Resiliencia:** El diseño de pruebas unitarias sobre funciones puras (reducers) e integración de componentes (Testing Library) provee un arnés de seguridad confiable para futuras iteraciones y asegura el éxito del despliegue en entornos de Integración Continua (CI/CD).
+
+---
+
+## ACLARACION FINAL: OPTIMIZACION DE GITHUB ACTIONS (CI)
+
+Durante la verificación del pipeline de Integración Continua en GitHub Actions, se identificó que las versiones predeterminadas de las acciones (`v4`) y de Node.js (`20`) generaban avisos informativos (*warnings*) relacionados con la obsolescencia gradual de runners y versiones previas del entorno de ejecución.
+
+Con el objetivo de entregar un laboratorio impecable, sin advertencias en la consola de GitHub Actions y con las versiones más modernas y estables, se realizaron las siguientes optimizaciones en `.github/workflows/ci.yml`:
+1. **Actualización de Actions a `v5`:** Se migraron las acciones oficiales a `actions/checkout@v5` y `actions/setup-node@v5`.
+2. **Actualización del entorno a Node.js 24:** Se configuró `node-version: 24`, garantizando compatibilidad con las especificaciones de ejecución más recientes.
+
+Gracias a estas modificaciones, la compilación, el linter y la suite de pruebas unitarias se ejecutan de manera completamente limpia, transparente y sin advertencias en el pipeline de GitHub Actions.
+
+> **Evidencia – Ejecución Limpia de GitHub Actions (Sin Warnings):**  
+> ![GitHub Actions CI Sin Warnings](resources/images/GithubActionsCISinWarnings.png)
